@@ -1,0 +1,48 @@
+.sobre-trilhas {
+  display: flex;
+  flex-direction: column;
+  max-width: 1600px;
+  width: 100%;
+}
+
+.sobre-trilhas h2 {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.pai-trilha {
+  border-bottom: 2px solid black;
+  display: flex;
+  align-items: center; /* Centraliza verticalmente */
+}
+
+h3 {
+  font-size: 30px;
+  margin-bottom: -40px; /* Adiciona espaçamento abaixo do título */
+}
+.txt-trilha {
+  width: 96%; /* Define a largura do texto */
+  text-align: justify; /* Justifica o texto */
+  display: flex;
+  align-items: center; /* Alinha a imagem verticalmente ao centro */
+  height: 400px;
+}
+
+.imagem-trilha {
+  margin-left: 80px; /* Espaçamento entre o texto e a imagem */
+  width: 350px; /* Ajuste o tamanho conforme necessário */
+  height: auto;
+}
+
+.imagem-trilha {
+  transition: transform 0.3s ease-in-out;
+}
+
+.imagem-trilha:hover {
+  transform: scale(1.1);
+}
+
+.txt-trilha span {
+  color: #e43a12;
+}
