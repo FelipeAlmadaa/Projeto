@@ -72,6 +72,11 @@ form select {
   display: none;
 }
 
+.spam-erro{
+  color: red;
+  font-family: "Poppins", serif;
+  font-size: 14px;
+}
 .custom-file-input {
   width: 500px;
   height: 150px;
@@ -252,7 +257,7 @@ h4 {
   display: flex;
   gap: 13px;
   margin-top: 30px;
-  margin-left: 260px;
+  margin-left: 00px;
 }
 .btns button {
   cursor: pointer;
@@ -271,6 +276,19 @@ h4 {
   background-color: #ffffff;
 }
 .btn-inscricao {
+  color: white;
+  background-color: #f3541c;
+  width: 250px ;
+  
+}
+
+.btn-salvar {
+  color: white;
+  background-color: #f3541c;
+  width: 250px;
+}
+
+.btn-carregar {
   color: white;
   background-color: #f3541c;
   width: 250px;

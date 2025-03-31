@@ -62,10 +62,13 @@
         <div class="informacoes-participante">
           <label for="nome">Nome completo</label>
           <input type="text" id="nome" name="nome" required />
+          <span id="erroNome" style="color: red; font-size: 14px;"></span>
 
           <label for="nome_de_usuario">Nome de Usuario</label>
           <input type="text" id="nome_de_usuario" name="usuário" required>
-          
+          <span id="errorUsuariosIguais" style="color: red; font-size: 14px;"></span>
+
+
           <label for="senha">Senha</label>
           <input type="text" id="senha" name="senhaUm" required>
           <span id="erroSenha" style="color: red; font-size: 14px;"></span>
@@ -81,9 +84,12 @@
             name="data_nascimento"
             required
           />
+          <span id="erroData" style="color: red; font-size: 14px;"></span>
+
 
           <label for="cpf">CPF</label>
           <input type="text" id="cpf" name="cpf" required />
+          <span id="erroCPF" style="color: red; font-size: 14px;"></span>
 
           <label for="sexo">Sexo</label>
           <select id="sexo" name="sexo" required>
@@ -99,6 +105,8 @@
 
           <label for="telefone">Telefone</label>
           <input type="tel" id="telefone" name="telefone" required />
+          <span id="erroTelefone" style="color: red; font-size: 14px;"></span>
+
 
           <label for="file-identidade">Documento de identidade</label>
           <label for="file-identidade" class="custom-file-input">
@@ -283,8 +291,13 @@
               Cancelar
             </button>
             <button class="btn-inscricao" id="btn-inscricao" disabled>
-              Fazer inscrição
+             Fazer inscrição
             </button>
+            <button class="btn-salvar" id="btn-salvar" type="button" onclick="salvarFormulario()"disabled >Salvar</button>
+            </form>
+
+            <button class="btn-carregar" id="btn-carregar" type="button" onclick="carregarFormulario()" >Carregar</button>
+
           </div>
         </div>
       </form>
