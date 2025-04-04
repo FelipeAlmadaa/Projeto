@@ -384,3 +384,67 @@ function carregarFormulario() {
     alert("Nenhum dado salvo encontrado.");
   }
 }
+
+// Alternacia de login
+
+document.addEventListener("DOMContentLoaded", function () {
+  const loginForm = document.getElementById("formlogin");
+  const registerForm = document.getElementById("register-form");
+  const showRegister = document.getElementById("show-register");
+  const showLogin = document.getElementById("show-login");
+
+  showRegister.addEventListener("click", function (e) {
+    e.preventDefault();
+    loginForm.style.display = "none";
+    registerForm.style.display = "block";
+  });
+
+  showLogin.addEventListener("click", function (e) {
+    e.preventDefault();
+    registerForm.style.display = "none";
+    loginForm.style.display = "block";
+  });
+
+  // Validação de Login
+  function validateLogin() {
+    const usuario = document.getElementById("login-usuario").value;
+    const senha = document.getElementById("login-senha").value;
+
+    // Adicione sua lógica de validação aqui
+    if (usuario === "" || senha === "") {
+      showError("Preencha todos os campos!");
+      return false;
+    }
+
+    return true;
+  }
+
+  // Validação de Registro
+  function validateRegister() {
+    const usuario = document.getElementById("reg-usuario").value;
+    const senha = document.getElementById("reg-senha").value;
+    const confirmar = document.getElementById("reg-confirmar").value;
+
+    if (usuario === "" || senha === "" || confirmar === "") {
+      showError("Preencha todos os campos!");
+      return false;
+    }
+
+    if (senha !== confirmar) {
+      showError("As senhas não coincidem!");
+      return false;
+    }
+
+    // Se tudo estiver ok
+    alert("Registro realizado com sucesso!");
+    registerForm.style.display = "none";
+    loginForm.style.display = "block";
+    return false; // Evita o submit real para demonstração
+  }
+
+  // Mostrar mensagens de erro
+  function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.style.display = "block";
+  }
+});
