@@ -12,7 +12,7 @@
     <title>Login | Trilhas</title>
   </head>
   <header></header>
-  <body>
+  <body>  
     <section class="login-container-geral">
       <div class="login-image">
         <img src="/Imagens/Learn Programming.png" alt="" />
@@ -39,7 +39,7 @@
             Ainda não possui uma conta?
             <span id="show-register" class="link">Registre-se!</span>
           </p>
-          <button type="submit" onclick="" class="login-btn">Entrar</button>
+          <button type="submit" class="login-btn">Entrar</button>
         </form>
 
         <!-- Formulário de Registro (oculto inicialmente) -->
@@ -50,14 +50,17 @@
             <div class="input-group">
               <label for="reg-usuario">Usuário</label>
               <input type="text" id="reg-usuario" required />
+              <span id="errorUsuariosIguais" style="color: red; font-size: 14px;"></span>
             </div>
             <div class="input-group">
               <label for="reg-senha">Senha</label>
               <input type="password" id="reg-senha" required />
+              <span id="erroSenha" style="color: red; font-size: 14px;"></span>
             </div>
             <div class="input-group">
               <label for="reg-confirmar">Confirmar Senha</label>
               <input type="password" id="reg-confirmar" required />
+              <span id="erroSenha" style="color: red; font-size: 14px;"></span>
             </div>
             <p>
               Já possui uma conta?
