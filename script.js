@@ -394,8 +394,6 @@ function validateRegister() {
   }
 
   localStorage.setItem("usuario", JSON.stringify(usuarioObj));
-    alert("Registro realizado com sucesso!");
-
   return true; // Permite o submit
 }
   function showError(mensagem, elemento) {
