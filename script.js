@@ -308,14 +308,13 @@ function carregarFormulario() {
   }
 }
 
-// Alternacia de login
-
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("formlogin");
   const registerForm = document.getElementById("register-form");
   const showRegister = document.getElementById("show-register");
   const showLogin = document.getElementById("show-login");
-  const errorMessage = document.getElementById("error-menssage"); // Adicionado para mensagens de erro gerais
+
+  const errorMessage = document.getElementById("error-menssage");
 
   showRegister.addEventListener("click", function (e) {
     e.preventDefault();
@@ -329,73 +328,7 @@ document.addEventListener("DOMContentLoaded", function () {
     loginForm.style.display = "block";
   });
 
-  function validateLogin() {
-    const usuarioDigitado = document.getElementById("nome_de_usuario").value;
-    const senhaDigitada = document.getElementById("senha").value;
-    const usuarioSalvo = localStorage.getItem("usuario");
-    const errorUsu = document.getElementById("error-menssage");
 
-    if (!usuarioSalvo) {
-        showError("Nenhum usuário encontrado. Cadastre-se primeiro!", errorUsu);
-        return false;
-    }
-
-    try {
-        const usuarioObj = JSON.parse(usuarioSalvo);
-
-        if (usuarioDigitado === usuarioObj.usuario && senhaDigitada === usuarioObj.senha) {
-            alert("Login realizado com sucesso!");
-            return true; // Permite o submit
-        } else {
-            showError("Nome de usuário ou senha incorretos.", errorUsu);
-            return false;
-        }
-    } catch (error) {
-        showError("Erro ao processar dados do usuário. Tente novamente.", errorUsu);
-        console.error("Erro ao fazer login:", error);
-        return false;
-    }
-}
-
-function validateRegister() {
-  const usuario = document.getElementById("reg-usuario").value;
-  const senha = document.getElementById("reg-senha").value;
-  const confirmarSenha = document.getElementById("reg-confirmar").value;
-  const errorUsuariosIguais = document.getElementById("errorUsuariosIguais");
-  const erroSenha = document.getElementById("erroSenha");
-  const usuarioObj = {
-      usuario: usuario,
-      senha: senha,
-  };
-
-  if (usuario === "" || senha === "" || confirmarSenha === "") {
-      showError("Preencha todos os campos!", erroSenha);
-      return false;
-  }
-
-  if (senha !== confirmarSenha) {
-      showError("As senhas não coincidem!", erroSenha);
-      return false;
-  }
-
-  const usuarioSalvo = localStorage.getItem("usuario");
-  if (usuarioSalvo) {
-      try {
-          const usuarioObjSalvo = JSON.parse(usuarioSalvo);
-          if (usuarioObjSalvo.usuario === usuario) {
-              showError("Este usuário já existe no sistema.", errorUsuariosIguais);
-              return false;
-          }
-      } catch (error) {
-          showError("Erro ao verificar usuário existente.", errorUsuariosIguais);
-          console.error("Erro ao registrar usuário:", error);
-          return false;
-      }
-  }
-
-  localStorage.setItem("usuario", JSON.stringify(usuarioObj));
-  return true; // Permite o submit
-}
   function showError(mensagem, elemento) {
     if (elemento && elemento instanceof HTMLElement) {
       elemento.textContent = mensagem;
@@ -404,4 +337,119 @@ function validateRegister() {
       alert(mensagem);
     }
   }
+
+  // Função de login
+  function validateLogin(event) {
+    event.preventDefault(); 
+
+    const usuarioDigitado = document.getElementById("nome_de_usuario").value;
+    const senhaDigitada = document.getElementById("senha").value;
+    const usuarioSalvo = localStorage.getItem("usuario");
+
+    const errorUsu = document.getElementById("error-menssage");
+
+    if (!usuarioSalvo) {
+      showError("Nenhum usuário encontrado. Cadastre-se primeiro!", errorUsu);
+      return;
+    }
+
+    try {
+      const usuarioObj = JSON.parse(usuarioSalvo);
+
+      if (usuarioDigitado === usuarioObj.usuario && senhaDigitada === usuarioObj.senha) {
+        alert("Login realizado com sucesso!");
+        loginForm.reset();
+        errorUsu.textContent = "";
+        // redirecionamento opcional aqui
+      } else {
+        showError("Nome de usuário ou senha incorretos.", errorUsu);
+      }
+    } catch (error) {
+      showError("Erro ao processar dados do usuário. Tente novamente.", errorUsu);
+      console.error("Erro ao fazer login:", error);
+    }
+  }
+
+  // Variável global para controle de user
+  let usuarioDisponivel = true;
+
+  // valida as informações do user
+  document.getElementById("reg-usuario").addEventListener("input", function () {
+    const usuarioDigitado = this.value.trim();
+    const errorSpan = document.getElementById("erroUsuarioExistente");
+    const usuarioSalvo = localStorage.getItem("usuario");
+  
+    if (!usuarioDigitado) {
+      errorSpan.textContent = "";
+      usuarioDisponivel = false;
+      return;
+    }
+  
+    try {
+      if (usuarioSalvo) {
+        const usuarioObjSalvo = JSON.parse(usuarioSalvo);
+        if (usuarioObjSalvo.usuario === usuarioDigitado) {
+          errorSpan.textContent = "Este nome de usuário já está em uso.";
+          usuarioDisponivel = false;
+        } else {
+          errorSpan.textContent = "";
+          usuarioDisponivel = true;
+        }
+        
+      } else {
+        errorSpan.textContent = "";
+        usuarioDisponivel = true;
+      }
+    } catch (error) {
+      console.error("Erro ao acessar localStorage:", error);
+      errorSpan.textContent = "Erro ao verificar nome de usuário.";
+      usuarioDisponivel = false;
+    }
+  });
+  
+
+  // Validação do registro
+  function validateRegister(event) {
+    event.preventDefault(); 
+
+    const usuario = document.getElementById("reg-usuario").value.trim();
+    const senha = document.getElementById("reg-senha").value;
+    const confirmarSenha = document.getElementById("reg-confirmar").value;
+
+    const errorSenha = document.getElementById("erroSenha");
+    const errorConfirmar = document.getElementById("erroConfirmarSenha");
+
+    // Limpa mensagens 
+    errorSenha.textContent = "";
+    errorConfirmar.textContent = "";
+
+    if (!usuario || !senha || !confirmarSenha) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    if (!usuarioDisponivel) {
+      alert("Este nome de usuário já está em uso. Escolha outro.");
+      return;
+    }
+
+    if (senha !== confirmarSenha) {
+      errorConfirmar.textContent = "As senhas não coincidem.";
+      return;
+    }
+
+    const usuarioData = { usuario, senha };
+    localStorage.setItem("usuario", JSON.stringify(usuarioData));
+    alert("Usuário registrado com sucesso!");
+    // Entra na tela de login após o registro 
+    registerForm.style.display = "none";
+    loginForm.style.display = "block";
+
+
+    registerForm.reset();
+  }
+
+  // Associa os validadores aos eventos de envio dos formulários
+  loginForm.addEventListener("submit", validateLogin);
+  registerForm.addEventListener("submit", validateRegister);
 });
