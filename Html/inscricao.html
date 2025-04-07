@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/Css/logout.css" />
     <link
       rel="stylesheet"
       href="/Css/styleInscricao.css"
@@ -10,10 +11,6 @@
     <link
       rel="stylesheet"
       href="/Css/header.css"
-    />
-    <link
-      rel="stylesheet"
-      href="/Css/darkmode.css"
     />
     <link
       rel="stylesheet"
@@ -34,8 +31,13 @@
         </div>
         <ul>
           <li onclick="voltarPagina()">Home</li>
-
-          <li>Inscrever-se</li>
+          <li onclick="abrirPagina()">Inscrever-se</li>
+          <li id="userMenu">
+            <span id="menuLogin">Login</span>
+            <div id="userDropdown" class="dropdown-content">
+              <a href="#" onclick="logout()">Sair</a>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
