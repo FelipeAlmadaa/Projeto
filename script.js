@@ -1,3 +1,4 @@
+// Funções de navegação
 function abrirPagina() {
   window.location.href = "inscricao.html";
 }
@@ -5,10 +6,66 @@ function abrirPagina() {
 function voltarPagina() {
   window.location.href = "/Html/index.html";
 }
+
 function loginPage() {
   window.location.href = "login.html";
 }
+
+// Verificar estado de login ao carregar a página
+function checkLoginStatus() {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const currentUser = localStorage.getItem("currentUser");
+  const menuLogin = document.getElementById("menuLogin");
+
+  if (isLoggedIn === "true" && currentUser) {
+    // Usuário logado - mostra nome e dropdown
+    menuLogin.textContent = currentUser;
+    menuLogin.onclick = function (e) {
+      e.preventDefault();
+      const dropdown = document.getElementById("userDropdown");
+      dropdown.classList.toggle("show-dropdown");
+    };
+  } else {
+    // Usuário não logado - mantém "Login" com redirecionamento normal
+    menuLogin.textContent = "Login";
+    menuLogin.onclick = loginPage;
+
+    // Garante que o dropdown está escondido
+    const dropdown = document.getElementById("userDropdown");
+    if (dropdown) dropdown.classList.remove("show-dropdown");
+  }
+
+  // Fecha dropdown ao clicar fora
+  window.onclick = function (e) {
+    if (!e.target.matches("#menuLogin")) {
+      const dropdowns = document.getElementsByClassName("dropdown-content");
+      for (let i = 0; i < dropdowns.length; i++) {
+        if (dropdowns[i].classList.contains("show-dropdown")) {
+          dropdowns[i].classList.remove("show-dropdown");
+        }
+      }
+    }
+  };
+}
+// Função de logout
+function logout() {
+  // Remove os itens de autenticação do localStorage
+  localStorage.removeItem("isLoggedIn");
+  localStorage.removeItem("currentUser");
+
+  // Fecha o dropdown
+  const userDropdown = document.getElementById("userDropdown");
+  if (userDropdown) {
+    userDropdown.classList.remove("show-dropdown");
+  }
+
+  // Redireciona para a página inicial
+  window.location.href = "index.html";
+}
+// Animação de scroll
 document.addEventListener("DOMContentLoaded", function () {
+  checkLoginStatus(); // Verifica o status de login ao carregar a página
+
   const trilhas = document.querySelectorAll(".pai-trilha");
   const inscrever = document.querySelector(".increver");
 
@@ -109,7 +166,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("email").addEventListener("input", validarEmail);
 
-
     const telefoneInput = document.getElementById("telefone");
     telefoneInput.addEventListener("input", validarTelefone);
 
@@ -155,10 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const valido =
-      todosPreenchidos &&
-      trilhasSelecionadas &&
-      termoAssinado &&
-      validarEmail;
+      todosPreenchidos && trilhasSelecionadas && termoAssinado && validarEmail;
     btnInscricao.disabled = !valido; // Ativa ou desativa o botão de inscrição
     btnCarregar.disabled = !valido;
     btnSalvar.disabled = !valido;
@@ -223,11 +276,11 @@ document.addEventListener("DOMContentLoaded", function () {
 const senha = document.getElementById("reg-senha");
 const confirmacao = document.getElementById("reg-confirmar");
 senha.addEventListener("input", senhasIguais);
-confirmacao.addEventListener("input", senhasIguais)
+confirmacao.addEventListener("input", senhasIguais);
 function senhasIguais() {
   const senhaValue = senha.value;
   const confirmacaoValue = confirmacao.value;
-  const spanSenha = document.getElementById("erroSenha")
+  const spanSenha = document.getElementById("erroSenha");
   if (senhaValue != confirmacaoValue) {
     spanSenha.textContent = "Senhas não são iguais";
     return false;
@@ -244,7 +297,7 @@ function salvarFormulario() {
   const sexo = document.getElementById("sexo").value;
   const email = document.getElementById("email").value;
   const telefone = document.getElementById("telefone").value;
-  const rua = document.getElementById("rua").value; 
+  const rua = document.getElementById("rua").value;
   const cep = document.getElementById("cep").value;
   const numero = document.getElementById("numero").value;
   const cidade = document.getElementById("cidade").value;
@@ -328,7 +381,6 @@ document.addEventListener("DOMContentLoaded", function () {
     loginForm.style.display = "block";
   });
 
-
   function showError(mensagem, elemento) {
     if (elemento && elemento instanceof HTMLElement) {
       elemento.textContent = mensagem;
@@ -340,7 +392,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Função de login
   function validateLogin(event) {
-    event.preventDefault(); 
+    event.preventDefault();
 
     const usuarioDigitado = document.getElementById("nome_de_usuario").value;
     const senhaDigitada = document.getElementById("senha").value;
@@ -356,16 +408,26 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const usuarioObj = JSON.parse(usuarioSalvo);
 
-      if (usuarioDigitado === usuarioObj.usuario && senhaDigitada === usuarioObj.senha) {
+      if (
+        usuarioDigitado === usuarioObj.usuario &&
+        senhaDigitada === usuarioObj.senha
+      ) {
+        // Armazena que o usuário está logado
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("currentUser", usuarioDigitado);
+
         alert("Login realizado com sucesso!");
         loginForm.reset();
         errorUsu.textContent = "";
-        // redirecionamento opcional aqui
+        window.location.href = "index.html";
       } else {
         showError("Nome de usuário ou senha incorretos.", errorUsu);
       }
     } catch (error) {
-      showError("Erro ao processar dados do usuário. Tente novamente.", errorUsu);
+      showError(
+        "Erro ao processar dados do usuário. Tente novamente.",
+        errorUsu
+      );
       console.error("Erro ao fazer login:", error);
     }
   }
@@ -378,13 +440,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const usuarioDigitado = this.value.trim();
     const errorSpan = document.getElementById("erroUsuarioExistente");
     const usuarioSalvo = localStorage.getItem("usuario");
-  
+
     if (!usuarioDigitado) {
       errorSpan.textContent = "";
       usuarioDisponivel = false;
       return;
     }
-  
+
     try {
       if (usuarioSalvo) {
         const usuarioObjSalvo = JSON.parse(usuarioSalvo);
@@ -395,7 +457,6 @@ document.addEventListener("DOMContentLoaded", function () {
           errorSpan.textContent = "";
           usuarioDisponivel = true;
         }
-        
       } else {
         errorSpan.textContent = "";
         usuarioDisponivel = true;
@@ -406,11 +467,10 @@ document.addEventListener("DOMContentLoaded", function () {
       usuarioDisponivel = false;
     }
   });
-  
 
   // Validação do registro
   function validateRegister(event) {
-    event.preventDefault(); 
+    event.preventDefault();
 
     const usuario = document.getElementById("reg-usuario").value.trim();
     const senha = document.getElementById("reg-senha").value;
@@ -419,7 +479,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const errorSenha = document.getElementById("erroSenha");
     const errorConfirmar = document.getElementById("erroConfirmarSenha");
 
-    // Limpa mensagens 
+    // Limpa mensagens
     errorSenha.textContent = "";
     errorConfirmar.textContent = "";
 
@@ -441,10 +501,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const usuarioData = { usuario, senha };
     localStorage.setItem("usuario", JSON.stringify(usuarioData));
     alert("Usuário registrado com sucesso!");
-    // Entra na tela de login após o registro 
+    // Entra na tela de login após o registro
     registerForm.style.display = "none";
     loginForm.style.display = "block";
-
 
     registerForm.reset();
   }
@@ -453,3 +512,23 @@ document.addEventListener("DOMContentLoaded", function () {
   loginForm.addEventListener("submit", validateLogin);
   registerForm.addEventListener("submit", validateRegister);
 });
+
+// Ajusta elementos específicos para mobile
+function adjustForMobile() {
+  if (window.innerWidth <= 768) {
+    // Adiciona classe mobile ao body
+    document.body.classList.add("mobile-view");
+
+    // Ajustes específicos
+    const trilhas = document.querySelectorAll(".pai-trilha");
+    trilhas.forEach((trilha) => {
+      trilha.style.marginBottom = "20px";
+    });
+  } else {
+    document.body.classList.remove("mobile-view");
+  }
+}
+
+// Executa ao carregar e redimensionar
+window.addEventListener("load", adjustForMobile);
+window.addEventListener("resize", adjustForMobile);
