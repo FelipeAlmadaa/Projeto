@@ -25,3 +25,13 @@ footer {
   width: 200px;
   height: auto;
 }
+
+@media (max-width: 768px) {
+  footer {
+    padding: 20px 0;
+  }
+
+  .rodape img {
+    width: 150px;
+  }
+}

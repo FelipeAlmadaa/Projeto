@@ -72,7 +72,7 @@ form select {
   display: none;
 }
 
-.spam-erro{
+.spam-erro {
   color: red;
   font-family: "Poppins", serif;
   font-size: 14px;
@@ -278,8 +278,7 @@ h4 {
 .btn-inscricao {
   color: white;
   background-color: #f3541c;
-  width: 250px ;
-  
+  width: 250px;
 }
 
 .btn-salvar {

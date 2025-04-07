@@ -46,3 +46,69 @@ h3 {
 .txt-trilha span {
   color: #e43a12;
 }
+@media (max-width: 768px) {
+  .pai-trilha {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .txt-trilha {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .imagem-trilha {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    margin: 0 auto 12px;
+    display: block;
+    border-radius: 4px;
+  }
+
+  .pai-trilha h3 {
+    margin: 0 0 12px 0; /* Margem apenas abaixo */
+    font-size: 17px;
+    text-align: center;
+    color: #000000; /* Títulos pretos */
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .txt-trilha p {
+    margin: 0;
+    padding: 0 2px;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: justify; /* Texto justificado */
+    text-justify: inter-word;
+    hyphens: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .pai-trilha {
+    padding: 12px 10px;
+  }
+
+  .pai-trilha h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .txt-trilha p {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .imagem-trilha {
+    max-width: 180px;
+    margin-bottom: 10px;
+  }
+}
