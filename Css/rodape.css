@@ -28,7 +28,7 @@ footer {
 
 @media (max-width: 768px) {
   footer {
-    padding: 15px 5px;
+    padding: 15px 19px;
   }
 
   .rodape img {
@@ -40,7 +40,7 @@ footer {
 /* Apenas ajuste de tamanho em mobile (opcional) */
 @media (max-width: 480px) {
   .rodape img {
-    margin-left: 70px;
+    margin-left: 25px;
     width: 180px; /* Redução leve se necessário */
   }
 }

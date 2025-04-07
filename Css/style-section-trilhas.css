@@ -82,8 +82,8 @@ h3 {
   }
 
   .txt-trilha p {
-    margin: 0;
-    padding: 0 2px;
+    margin-left: 11px;
+    padding: 0 13px;
     font-size: 14px;
     line-height: 1.5;
     text-align: justify; /* Texto justificado */
