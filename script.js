@@ -312,8 +312,6 @@ function salvarFormulario() {
 
   const dadosFormulario = {
     nome: nome,
-    nomeUsuario: nomeUsuario,
-    senha: senha,
     dataNascimento: dataNascimento,
     cpf: cpf,
     sexo: sexo,
@@ -329,7 +327,6 @@ function salvarFormulario() {
   };
 
   localStorage.setItem("dadosFormulario", JSON.stringify(dadosFormulario));
-  alert("Dados salvos!");
 }
 
 function carregarFormulario() {
@@ -357,8 +354,6 @@ function carregarFormulario() {
     });
 
     document.getElementById("termo").checked = dadosFormulario.termo;
-
-    alert("Dados carregados!");
   } else {
     alert("Nenhum dado salvo encontrado.");
   }
