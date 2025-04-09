@@ -164,6 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
+    //validação email
     document.getElementById("email").addEventListener("input", validarEmail);
 
     const telefoneInput = document.getElementById("telefone");
@@ -187,6 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
+    //validação cpf
     const cpfInput = document.getElementById("cpf");
     cpfInput.addEventListener("input", validarCPf);
 
@@ -235,6 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
       modal.style.display = "block";
     }
   });
+
   btnSalvar.addEventListener("click", function (event) {
     event.preventDefault();
 
@@ -432,7 +435,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Variável global para controle de user
   let usuarioDisponivel = true;
 
   // valida as informações do user
