@@ -25,3 +25,22 @@ footer {
   width: 200px;
   height: auto;
 }
+
+@media (max-width: 768px) {
+  footer {
+    padding: 15px 19px;
+  }
+
+  .rodape img {
+    display: block !important; /* Força exibição */
+    width: 200px; /* Ou o tamanho desejado */
+  }
+}
+
+/* Apenas ajuste de tamanho em mobile (opcional) */
+@media (max-width: 480px) {
+  .rodape img {
+    margin-left: 25px;
+    width: 180px; /* Redução leve se necessário */
+  }
+}

@@ -3,23 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/Projeto/Css/logout.css" />
     <link
       rel="stylesheet"
-      href="/Css/styleInscricao.css"
+      href="/Projeto/Css/styleInscricao.css"
     />
     <link
       rel="stylesheet"
-      href="/Css/header.css"
+      href="/Projeto/Css/header.css"
     />
     <link
       rel="stylesheet"
-      href="/Css/darkmode.css"
+      href="/Projeto/Css/rodape.css"
     />
-    <link
-      rel="stylesheet"
-      href="/Css/rodape.css"
-    />
-    <link rel="stylesheet" href="/Css/modal.css" />
+    <link rel="stylesheet" href="/Projeto/Css/modal.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       rel="stylesheet"
@@ -34,8 +31,13 @@
         </div>
         <ul>
           <li onclick="voltarPagina()">Home</li>
-
-          <li>Inscrever-se</li>
+          <li onclick="abrirPagina()">Inscrever-se</li>
+          <li id="userMenu">
+            <span id="menuLogin">Login</span>
+            <div id="userDropdown" class="dropdown-content">
+              <a href="#" onclick="logout()">Sair</a>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -63,21 +65,7 @@
           <label for="nome">Nome completo</label>
           <input type="text" id="nome" name="nome" required />
           <span id="erroNome" style="color: red; font-size: 14px;"></span>
-
-          <label for="nome_de_usuario">Nome de Usuario</label>
-          <input type="text" id="nome_de_usuario" name="usuário" required>
-          <span id="errorUsuariosIguais" style="color: red; font-size: 14px;"></span>
-          <span id="errousu" style="color: red; font-size: 14px;"></span>
-
-
-          <label for="senha">Senha</label>
-          <input type="text" id="senha" name="senhaUm" required>
-          <span id="erroSenha" style="color: red; font-size: 14px;"></span>
-
-          <label for="senha_confirmação">Confirme a sua senha</label>
-          <input type="text" id="senha_confirmacao" name="senhaDois" required>
-          <span id="erroSenha" style="color: red; font-size: 14px;"></span>
-
+          
           <label for="data_nascimento">Data de nascimento</label>
           <input
             type="date"
@@ -313,13 +301,9 @@
   </body>
   <footer>
     <div class="rodape">
-      <img
-        src=
-        "/Projeto/Imagens/LOGO_GOV_MA_2023_MAIOR.png"
-        alt=""
-      />
+      <img src="/Projeto/Imagens/LOGO_GOV_MA_2023_MAIOR.png" alt="" />
     </div>
   </footer>
-  <script src="/script.js"></script>
+  <script src="/Projeto/script.js"></script>
 
 </html>

@@ -1,3 +1,4 @@
+// Funções de navegação
 function abrirPagina() {
   window.location.href = "inscricao.html";
 }
@@ -5,10 +6,66 @@ function abrirPagina() {
 function voltarPagina() {
   window.location.href = "/Html/index.html";
 }
+
 function loginPage() {
   window.location.href = "login.html";
 }
+
+// Verificar estado de login ao carregar a página
+function checkLoginStatus() {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const currentUser = localStorage.getItem("currentUser");
+  const menuLogin = document.getElementById("menuLogin");
+
+  if (isLoggedIn === "true" && currentUser) {
+    // Usuário logado - mostra nome e dropdown
+    menuLogin.textContent = currentUser;
+    menuLogin.onclick = function (e) {
+      e.preventDefault();
+      const dropdown = document.getElementById("userDropdown");
+      dropdown.classList.toggle("show-dropdown");
+    };
+  } else {
+    // Usuário não logado - mantém "Login" com redirecionamento normal
+    menuLogin.textContent = "Login";
+    menuLogin.onclick = loginPage;
+
+    // Garante que o dropdown está escondido
+    const dropdown = document.getElementById("userDropdown");
+    if (dropdown) dropdown.classList.remove("show-dropdown");
+  }
+
+  // Fecha dropdown ao clicar fora
+  window.onclick = function (e) {
+    if (!e.target.matches("#menuLogin")) {
+      const dropdowns = document.getElementsByClassName("dropdown-content");
+      for (let i = 0; i < dropdowns.length; i++) {
+        if (dropdowns[i].classList.contains("show-dropdown")) {
+          dropdowns[i].classList.remove("show-dropdown");
+        }
+      }
+    }
+  };
+}
+// Função de logout
+function logout() {
+  // Remove os itens de autenticação do localStorage
+  localStorage.removeItem("isLoggedIn");
+  localStorage.removeItem("currentUser");
+
+  // Fecha o dropdown
+  const userDropdown = document.getElementById("userDropdown");
+  if (userDropdown) {
+    userDropdown.classList.remove("show-dropdown");
+  }
+
+  // Redireciona para a página inicial
+  window.location.href = "index.html";
+}
+// Animação de scroll
 document.addEventListener("DOMContentLoaded", function () {
+  checkLoginStatus(); // Verifica o status de login ao carregar a página
+
   const trilhas = document.querySelectorAll(".pai-trilha");
   const inscrever = document.querySelector(".increver");
 
@@ -107,39 +164,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
+    //validação email
     document.getElementById("email").addEventListener("input", validarEmail);
-
-    const senha = document.getElementById("senha");
-    const confirmacao = document.getElementById("senha_confirmacao");
-    senha.addEventListener("input", senhasIguais);
-    confirmacao.addEventListener("input", senhasIguais);
-
-    function senhasIguais() {
-      const senhaValue = senha.value;
-      const confirmacaoValue = confirmacao.value;
-      const spanSenha = document.getElementById("erroSenha");
-
-      if (senhaValue != confirmacaoValue) {
-        spanSenha.textContent = "Senhas não são iguais";
-        return false;
-      } else {
-        spanSenha.textContent = "";
-        return true;
-      }
-    }
-
-    function salvarUsusario() {
-      // função na pagina de inscrição
-      let user = document.getElementById("nome_de_usuario").value;
-      let pass = document.getElementById("senha").value;
-      let usuario = {
-        Usuário: user,
-        Senha: pass,
-      };
-      localStorage.setItem("usuario", JSON.stringify(usuario)); //converte para um arquivo JSON
-      alert("Usuário cadastrado com sucesso"); //Validar a sua inscrição
-      console.log(usuario);
-    }
 
     const telefoneInput = document.getElementById("telefone");
     telefoneInput.addEventListener("input", validarTelefone);
@@ -162,6 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
+    //validação cpf
     const cpfInput = document.getElementById("cpf");
     cpfInput.addEventListener("input", validarCPf);
 
@@ -186,12 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const valido =
-      todosPreenchidos &&
-      trilhasSelecionadas &&
-      termoAssinado &&
-      validarEmail &&
-      senhasIguais &&
-      salvarUsusario;
+      todosPreenchidos && trilhasSelecionadas && termoAssinado && validarEmail;
     btnInscricao.disabled = !valido; // Ativa ou desativa o botão de inscrição
     btnCarregar.disabled = !valido;
     btnSalvar.disabled = !valido;
@@ -215,6 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
       modal.style.display = "block";
     }
   });
+
   btnSalvar.addEventListener("click", function (event) {
     event.preventDefault();
 
@@ -253,66 +276,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-
-function preencherLogin() {
-  //Função responsavevel por preencher o texto
-  let usuarioSalvo = localStorage.getItem("usuario");
-
-  if (usuarioSalvo) {
-    let usuario = JSON.parse(usuarioSalvo);
-    document.getElementById("nome_de_usuario").value = usuario.nome;
-  }
-}
-
-function validateLogin() {
-  let usernameDigitado = document.getElementById("nome_de_usuario").value;
-  let passwordDigitado = document.getElementById("senha").value;
-  let usuarioSalvo = localStorage.getItem("usuario");
-  let errorUsuariosIguais = document.getElementById("errorUsuariosIguais");
-  let errorUsu = document.getElementById("errorusu");
-
-  if (usuarioSalvo) {
-    try {
-      let usuarioObj = JSON.parse(usuarioSalvo);
-
-      if (usernameDigitado === usuarioObj.usuario) {
-        errorUsuariosIguais.textContent = "Este usuário já existe no sistema.";
-        errorUsuariosIguais.style.display = "block";
-        errorUsu.style.display = "none";
-        return false;
-      }
-
-      if (
-        usernameDigitado === usuarioObj.usuario &&
-        passwordDigitado === usuarioObj.senha
-      ) {
-        errorUsuariosIguais.style.display = "none";
-        errorUsu.style.display = "none";
-        return true;
-      } else {
-        errorUsu.textContent = "Nome de usuário ou senha incorretos.";
-        errorUsu.style.display = "block";
-        errorUsuariosIguais.style.display = "none";
-        return false;
-      }
-    } catch (e) {
-      errorUsu.textContent = "Erro ao processar dados do usuário.";
-      errorUsu.style.display = "block";
-      errorUsuariosIguais.style.display = "none";
-      return false;
-    }
-  } else {
-    errorUsu.textContent = "Nenhum usuário encontrado. Cadastre-se primeiro!";
-    errorUsu.style.display = "block";
-    errorUsuariosIguais.style.display = "none";
+const senha = document.getElementById("reg-senha");
+const confirmacao = document.getElementById("reg-confirmar");
+senha.addEventListener("input", senhasIguais);
+confirmacao.addEventListener("input", senhasIguais);
+function senhasIguais() {
+  const senhaValue = senha.value;
+  const confirmacaoValue = confirmacao.value;
+  const spanSenha = document.getElementById("erroSenha");
+  if (senhaValue != confirmacaoValue) {
+    spanSenha.textContent = "Senhas não são iguais";
     return false;
+  } else {
+    spanSenha.textContent = "";
+    return true;
   }
 }
 
 function salvarFormulario() {
   const nome = document.getElementById("nome").value;
-  const nomeUsuario = document.getElementById("nome_de_usuario").value;
-  const senha = document.getElementById("senha").value;
   const dataNascimento = document.getElementById("data_nascimento").value;
   const cpf = document.getElementById("cpf").value;
   const sexo = document.getElementById("sexo").value;
@@ -330,8 +312,6 @@ function salvarFormulario() {
 
   const dadosFormulario = {
     nome: nome,
-    nomeUsuario: nomeUsuario,
-    senha: senha,
     dataNascimento: dataNascimento,
     cpf: cpf,
     sexo: sexo,
@@ -347,7 +327,6 @@ function salvarFormulario() {
   };
 
   localStorage.setItem("dadosFormulario", JSON.stringify(dadosFormulario));
-  alert("Dados salvos!");
 }
 
 function carregarFormulario() {
@@ -357,9 +336,6 @@ function carregarFormulario() {
     const dadosFormulario = JSON.parse(dadosFormularioString);
 
     document.getElementById("nome").value = dadosFormulario.nome;
-    document.getElementById("nome_de_usuario").value =
-      dadosFormulario.nomeUsuario;
-    document.getElementById("senha").value = dadosFormulario.senha;
     document.getElementById("data_nascimento").value =
       dadosFormulario.dataNascimento;
     document.getElementById("cpf").value = dadosFormulario.cpf;
@@ -378,20 +354,18 @@ function carregarFormulario() {
     });
 
     document.getElementById("termo").checked = dadosFormulario.termo;
-
-    alert("Dados carregados!");
   } else {
     alert("Nenhum dado salvo encontrado.");
   }
 }
-
-// Alternacia de login
 
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("formlogin");
   const registerForm = document.getElementById("register-form");
   const showRegister = document.getElementById("show-register");
   const showLogin = document.getElementById("show-login");
+
+  const errorMessage = document.getElementById("error-menssage");
 
   showRegister.addEventListener("click", function (e) {
     e.preventDefault();
@@ -405,46 +379,153 @@ document.addEventListener("DOMContentLoaded", function () {
     loginForm.style.display = "block";
   });
 
-  // Validação de Login
-  function validateLogin() {
-    const usuario = document.getElementById("login-usuario").value;
-    const senha = document.getElementById("login-senha").value;
-
-    // Adicione sua lógica de validação aqui
-    if (usuario === "" || senha === "") {
-      showError("Preencha todos os campos!");
-      return false;
+  function showError(mensagem, elemento) {
+    if (elemento && elemento instanceof HTMLElement) {
+      elemento.textContent = mensagem;
+      elemento.style.display = "block";
+    } else {
+      alert(mensagem);
     }
-
-    return true;
   }
 
-  // Validação de Registro
-  function validateRegister() {
-    const usuario = document.getElementById("reg-usuario").value;
+  // Função de login
+  function validateLogin(event) {
+    event.preventDefault();
+
+    const usuarioDigitado = document.getElementById("nome_de_usuario").value;
+    const senhaDigitada = document.getElementById("senha").value;
+    const usuarioSalvo = localStorage.getItem("usuario");
+
+    const errorUsu = document.getElementById("error-menssage");
+
+    if (!usuarioSalvo) {
+      showError("Nenhum usuário encontrado. Cadastre-se primeiro!", errorUsu);
+      return;
+    }
+
+    try {
+      const usuarioObj = JSON.parse(usuarioSalvo);
+
+      if (
+        usuarioDigitado === usuarioObj.usuario &&
+        senhaDigitada === usuarioObj.senha
+      ) {
+        // Armazena que o usuário está logado
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("currentUser", usuarioDigitado);
+
+        alert("Login realizado com sucesso!");
+        loginForm.reset();
+        errorUsu.textContent = "";
+        window.location.href = "index.html";
+      } else {
+        showError("Nome de usuário ou senha incorretos.", errorUsu);
+      }
+    } catch (error) {
+      showError(
+        "Erro ao processar dados do usuário. Tente novamente.",
+        errorUsu
+      );
+      console.error("Erro ao fazer login:", error);
+    }
+  }
+
+  let usuarioDisponivel = true;
+
+  // valida as informações do user
+  document.getElementById("reg-usuario").addEventListener("input", function () {
+    const usuarioDigitado = this.value.trim();
+    const errorSpan = document.getElementById("erroUsuarioExistente");
+    const usuarioSalvo = localStorage.getItem("usuario");
+
+    if (!usuarioDigitado) {
+      errorSpan.textContent = "";
+      usuarioDisponivel = false;
+      return;
+    }
+
+    try {
+      if (usuarioSalvo) {
+        const usuarioObjSalvo = JSON.parse(usuarioSalvo);
+        if (usuarioObjSalvo.usuario === usuarioDigitado) {
+          errorSpan.textContent = "Este nome de usuário já está em uso.";
+          usuarioDisponivel = false;
+        } else {
+          errorSpan.textContent = "";
+          usuarioDisponivel = true;
+        }
+      } else {
+        errorSpan.textContent = "";
+        usuarioDisponivel = true;
+      }
+    } catch (error) {
+      console.error("Erro ao acessar localStorage:", error);
+      errorSpan.textContent = "Erro ao verificar nome de usuário.";
+      usuarioDisponivel = false;
+    }
+  });
+
+  // Validação do registro
+  function validateRegister(event) {
+    event.preventDefault();
+
+    const usuario = document.getElementById("reg-usuario").value.trim();
     const senha = document.getElementById("reg-senha").value;
-    const confirmar = document.getElementById("reg-confirmar").value;
+    const confirmarSenha = document.getElementById("reg-confirmar").value;
 
-    if (usuario === "" || senha === "" || confirmar === "") {
-      showError("Preencha todos os campos!");
-      return false;
+    const errorSenha = document.getElementById("erroSenha");
+    const errorConfirmar = document.getElementById("erroConfirmarSenha");
+
+    // Limpa mensagens
+    errorSenha.textContent = "";
+    errorConfirmar.textContent = "";
+
+    if (!usuario || !senha || !confirmarSenha) {
+      alert("Por favor, preencha todos os campos.");
+      return;
     }
 
-    if (senha !== confirmar) {
-      showError("As senhas não coincidem!");
-      return false;
+    if (!usuarioDisponivel) {
+      alert("Este nome de usuário já está em uso. Escolha outro.");
+      return;
     }
 
-    // Se tudo estiver ok
-    alert("Registro realizado com sucesso!");
+    if (senha !== confirmarSenha) {
+      errorConfirmar.textContent = "As senhas não coincidem.";
+      return;
+    }
+
+    const usuarioData = { usuario, senha };
+    localStorage.setItem("usuario", JSON.stringify(usuarioData));
+    alert("Usuário registrado com sucesso!");
+    // Entra na tela de login após o registro
     registerForm.style.display = "none";
     loginForm.style.display = "block";
-    return false; // Evita o submit real para demonstração
+
+    registerForm.reset();
   }
 
-  // Mostrar mensagens de erro
-  function showError(message) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = "block";
-  }
+  // Associa os validadores aos eventos de envio dos formulários
+  loginForm.addEventListener("submit", validateLogin);
+  registerForm.addEventListener("submit", validateRegister);
 });
+
+// Ajusta elementos específicos para mobile
+function adjustForMobile() {
+  if (window.innerWidth <= 768) {
+    // Adiciona classe mobile ao body
+    document.body.classList.add("mobile-view");
+
+    // Ajustes específicos
+    const trilhas = document.querySelectorAll(".pai-trilha");
+    trilhas.forEach((trilha) => {
+      trilha.style.marginBottom = "20px";
+    });
+  } else {
+    document.body.classList.remove("mobile-view");
+  }
+}
+
+// Executa ao carregar e redimensionar
+window.addEventListener("load", adjustForMobile);
+window.addEventListener("resize", adjustForMobile);

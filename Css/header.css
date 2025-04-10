@@ -45,6 +45,7 @@ header {
 }
 
 .menu li {
+  white-space: nowrap;
   font-size: 18px;
   color: white;
   margin: 0 10px;
@@ -66,4 +67,50 @@ header {
 
 .menu li:hover::after {
   width: 100%; /* Expande a linha */
+}
+/* ===== VERSÃO MOBILE ===== */
+@media (max-width: 768px) {
+  .img-logo {
+    display: none; /* Remove a imagem */
+  }
+
+  .menu {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .menu ul {
+    gap: 15px;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .menu li {
+    font-size: 14px;
+    padding: 5px 0;
+  }
+
+  /* Dropdown mobile */
+  #userDropdown {
+    position: static;
+    margin-top: 5px;
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    height: 50px;
+    padding: 0 10px;
+  }
+
+  .menu li {
+    font-size: 13px;
+  }
+
+  .menu ul {
+    gap: 8px;
+  }
 }
