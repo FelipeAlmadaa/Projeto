@@ -4,7 +4,7 @@ function abrirPagina() {
 }
 
 function voltarPagina() {
-  window.location.href = "/Html/index.html";
+  window.location.href = "index.html";
 }
 
 function loginPage() {
